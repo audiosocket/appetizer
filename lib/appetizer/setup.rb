@@ -14,6 +14,8 @@ module App
   end
 
   def self.init!
+    return true if defined?(@init) && @init
+
     envfile = "config/environments/#{App.env}.rb"
     load envfile if File.exists? envfile
     Dir["config/initializers/**/*.rb"].sort.each { |f| load f }
@@ -30,12 +32,14 @@ module App
       $:.unshift File.expand_path "app/models"
       Dir["app/models/**/*.rb"].sort.each { |f| require f[11..-4] }
     end
+
+    @init = true
   end
 
   def self.load file
     now = Time.now.to_f
     Kernel.load file
-    p file => (Time.now.to_f - now)
+    p :load => { file => (Time.now.to_f - now) }
   end
 
   def self.port
@@ -49,7 +53,7 @@ module App
   def self.require file
     now = Time.now.to_f
     Kernel.require file
-    p file => (Time.now.to_f - now)
+    p :require => { file => (Time.now.to_f - now) }
   end
 
   def self.test?
@@ -57,7 +61,8 @@ module App
   end
 end
 
-App.load "config/env.rb" if File.exists? "config/env.rb"
+App.load "config/env.local.rb" if File.exists? "config/env.local.rb"
+App.load "config/env.rb"       if File.exists? "config/env.rb"
 
 if defined? Rake
   here = File.expand_path "..", __FILE__ # tasks from appetizer
@@ -68,7 +73,7 @@ if defined? Rake
 end
 
 if defined? IRB
-  require "appetizer/console"
+  App.require "appetizer/console"
 
   IRB.conf[:PROMPT_MODE] = :SIMPLE
   App.init!
