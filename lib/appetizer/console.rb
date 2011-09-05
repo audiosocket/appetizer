@@ -1,3 +1,3 @@
 def reload!
-  exec "irb -r ./config/app"
+  exec "irb -r bundler/setup -r appetizer/setup"
 end
