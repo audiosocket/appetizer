@@ -1,8 +1,8 @@
 module Appetizer
   module Rack
-    class Placeholder
-      def initialize root = "public", glob = "**/*", &fallback
-        fallback ||= lambda { |env|
+    class Splash
+      def initialize root = "public", glob = "**/*", &notfound
+        notfound ||= lambda { |env|
           [404, { "Content-Type" => "text/plain" }, []]
         }
 
@@ -10,7 +10,7 @@ module Appetizer
           select { |f| File.file? f }.
           map    { |f| f[root.length..-1] }
 
-        @static = ::Rack::Static.new fallback, root: root, urls: urls
+        @static = ::Rack::Static.new notfound, root: root, urls: urls
       end
 
       def call env
