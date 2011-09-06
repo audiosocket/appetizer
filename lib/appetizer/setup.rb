@@ -17,14 +17,16 @@ module App
   def self.init!
     return true if defined?(@initialized) && @initialized
 
-    envfile = "config/environments/#{App.env}.rb"
+    envfile = "config/{env,environments}/#{App.env}.rb"
     load envfile if File.exists? envfile
 
-    Dir["config/initializers/**/*.rb"].sort.each { |f| load f }
+    Dir["config/{init,initializers}/**/*.rb"].sort.each { |f| load f }
 
     if File.exists? "config/database.yml"
       require "appetizer/activerecord"
     end
+
+    load "config/init.rb" if File.exists? "config/init.rb"
 
     @initialized = true
   end
