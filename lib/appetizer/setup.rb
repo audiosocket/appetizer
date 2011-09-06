@@ -1,7 +1,8 @@
-# Add the app's lib to the load path.
+# Add the app's lib to the load path immediately.
 
 $:.unshift File.expand_path "./lib"
 
+require "fileutils"
 require "logger"
 
 module App
@@ -14,26 +15,18 @@ module App
   end
 
   def self.init!
-    return true if defined?(@init) && @init
+    return true if defined?(@initialized) && @initialized
 
     envfile = "config/environments/#{App.env}.rb"
     load envfile if File.exists? envfile
+
     Dir["config/initializers/**/*.rb"].sort.each { |f| load f }
 
     if File.exists? "config/database.yml"
-      require "active_record/base"
-      require "yaml"
-
-      ActiveRecord::Base.configurations = YAML.load File.read("config/database.yml")
-      ActiveRecord::Base.establish_connection env
+      require "appetizer/activerecord"
     end
 
-    if File.directory? "app/models"
-      $:.unshift File.expand_path "app/models"
-      Dir["app/models/**/*.rb"].sort.each { |f| require f[11..-4] }
-    end
-
-    @init = true
+    @initialized = true
   end
 
   def self.load file
@@ -61,20 +54,16 @@ module App
   end
 end
 
+# Make sure tmp exists, a bunch of things may use it.
+
+FileUtils.mkdir_p "tmp"
+
 App.load "config/env.local.rb" if File.exists? "config/env.local.rb"
 App.load "config/env.rb"       if File.exists? "config/env.rb"
 
-if defined? Rake
-  here = File.expand_path "..", __FILE__ # tasks from appetizer
-  Dir["#{here}/tasks/**/*.rake"].sort.each { |f| App.load f }
-
-  # tasks from the app itself
-  Dir["lib/tasks/**/*.rake"].sort.each { |f| App.load f }
-end
-
 if defined? IRB
-  App.require "appetizer/console"
-
   IRB.conf[:PROMPT_MODE] = :SIMPLE
+
+  App.require "appetizer/console"
   App.init!
 end
