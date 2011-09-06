@@ -2,10 +2,13 @@
 
 $:.unshift File.expand_path "./lib"
 
+require "appetizer/events"
 require "fileutils"
 require "logger"
 
 module App
+  extend Appetizer::Events
+
   def self.env
     (ENV["RACK_ENV"] || ENV["RAILS_ENV"] || "development").intern
   end
@@ -20,13 +23,12 @@ module App
     envfile = "config/{env,environments}/#{App.env}.rb"
     load envfile if File.exists? envfile
 
+    fire :initializing
+
     Dir["config/{init,initializers}/**/*.rb"].sort.each { |f| load f }
-
-    if File.exists? "config/database.yml"
-      require "appetizer/activerecord"
-    end
-
     load "config/init.rb" if File.exists? "config/init.rb"
+
+    fire :initialized
 
     @initialized = true
   end
