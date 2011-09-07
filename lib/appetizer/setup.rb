@@ -34,9 +34,9 @@ module App
   end
 
   def self.load file
-    now = Time.now.to_f
+    now = Time.now.to_f if ENV["APPETIZER_TRACE"]
     Kernel.load file
-    p :load => { file => (Time.now.to_f - now) }
+    p :load => { file => (Time.now.to_f - now) } if ENV["APPETIZER_TRACE"]
   end
 
   def self.port
@@ -48,9 +48,9 @@ module App
   end
 
   def self.require file
-    now = Time.now.to_f
+    now = Time.now.to_f if ENV["APPETIZER_TRACE"]
     Kernel.require file
-    p :require => { file => (Time.now.to_f - now) }
+    p :require => { file => (Time.now.to_f - now) } if ENV["APPETIZER_TRACE"]
   end
 
   def self.test?
