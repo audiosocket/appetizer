@@ -12,32 +12,45 @@ require "securerandom"
 module Appetizer
   module Rack
     class CSRF
-      def initialize app, param = "csrf", header = "HTTP_X_CSRF", &block
+      def initialize app, &block
         @app    = app
         @exempt = block || lambda { |r| false }
-        @header = header
-        @param  = param
       end
 
+      class << self
+        attr_accessor :header, :param
+      end
+
+      self.header = "HTTP_X_CSRF"
+      self.param  = "csrf"
+
       def self.tag env
-        "<input type='hidden' name='#@param' value='#{token env}'>"
+        "<input type='hidden' name='#{param}' value='#{token env}'>"
       end
 
       def self.token env
-        env["rack.session"][@param]
+        env["rack.session"][param]
       end
 
       def call env
         request = ::Rack::Request.new env
         token   = token! env
-        rtoken  = env[@header] || request.POST[@param]
+        rtoken  = env[header] || request.POST[param]
         valid   = rtoken == token
 
-        if request.get? || request.head? || @exempt[request] || valid
+        if request.get? || request.head? || valid || @exempt[request]
           return @app.call env
         end
 
         [400, { "Content-Type" => "text/plain" }, "Bad or missing CSRF token."]
+      end
+
+      def header
+        self.class.header
+      end
+
+      def param
+        self.class.param
       end
 
       def token env
@@ -45,7 +58,7 @@ module Appetizer
       end
 
       def token! env
-        env["rack.session"][@param] ||= SecureRandom.hex 20
+        env["rack.session"][param] ||= SecureRandom.hex 20
       end
     end
   end
