@@ -42,6 +42,10 @@ module App
     p :load => { file => (Time.now.to_f - now) } if ENV["APPETIZER_TRACE"]
   end
 
+  def self.log
+    @log ||= Logger.new test? ? "tmp/test.log" : $stdout
+  end
+
   def self.production?
     :production == env
   end
@@ -56,6 +60,18 @@ module App
     :test == env
   end
 end
+
+# Set default log formatter and level. WARN for production, INFO
+# otherwise. Override severity with the `APPETIZER_LOG_LEVEL` env
+# var. Formatter just prefixes with severity.
+
+App.log.formatter = lambda do |severity, time, program, message|
+  "[#{severity}] #{message}\n"
+end
+
+App.log.level = ENV["APPETIZER_LOG_LEVEL"] ?
+  Logger.const_get(ENV["APPETIZER_LOG_LEVEL"].upcase) :
+  App.production? ? Logger::WARN : Logger::INFO
 
 # Make sure tmp exists, a bunch of things may use it.
 
