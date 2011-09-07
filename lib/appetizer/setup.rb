@@ -42,10 +42,6 @@ module App
     p :load => { file => (Time.now.to_f - now) } if ENV["APPETIZER_TRACE"]
   end
 
-  def self.port
-    (ENV["PORT"] || 3000).to_i
-  end
-
   def self.production?
     :production == env
   end
