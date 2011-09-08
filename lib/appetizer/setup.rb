@@ -73,6 +73,10 @@ App.log.level = ENV["APPETIZER_LOG_LEVEL"] ?
   Logger.const_get(ENV["APPETIZER_LOG_LEVEL"].upcase) :
   App.production? ? Logger::WARN : Logger::INFO
 
+def (App.log).write message
+  self << message
+end
+
 # Make sure tmp exists, a bunch of things may use it.
 
 FileUtils.mkdir_p "tmp"
