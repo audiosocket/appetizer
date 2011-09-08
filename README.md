@@ -7,6 +7,7 @@ includes a bunch of extracted stuff that requires other libraries
 ## Assumptions
 
 * Running Ruby 1.9.2.
+* Using Bundler.
 * Logging in all envs except `test` is to `STDOUT`. Logging in `test`
   is to `tmp/test.log`.
 * Default internal and external encodings are `Encoding::UTF_8`.
