@@ -31,6 +31,13 @@ module App
     Dir["config/{init,initializers}/**/*.rb"].sort.each { |f| load f }
     load "config/init.rb" if File.exists? "config/init.rb"
 
+    # If the app has an app/models directory, autorequire 'em.
+
+    if File.directory? "app/models"
+      $:.unshift File.expand_path "app/models"
+      Dir["app/models/**/*.rb"].sort.each { |f| require f[11..-4] }
+    end
+
     fire :initialized
 
     @initialized = true
