@@ -3,8 +3,6 @@ task :test do
   cmd = [
          "ruby",
          "-I", "test",
-         "-r", "bundler/setup",
-         "-r", "appetizer/setup",
          "-e", "Dir['test/**/*_test.rb'].each { |f| load f }"
         ]
 
