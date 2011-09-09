@@ -1,6 +1,6 @@
 # Add the app's lib to the load path immediately.
 
-$:.unshift File.expand_path "./lib"
+$:.unshift File.expand_path "lib"
 
 require "appetizer/events"
 require "fileutils"
