@@ -2,7 +2,7 @@ desc "Run tests."
 task :test do
   cmd = [
          "ruby",
-         "-I", "test",
+         "-I", "lib:test",
          "-e", "Dir['test/**/*_test.rb'].each { |f| load f }"
         ]
 
