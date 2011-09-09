@@ -14,17 +14,6 @@ if File.directory? "test"
   Dir["#{here}/tasks/test/*.rake"].sort.each { |f| App.load f }
 end
 
-if File.exists? "config/database.yml"
-  module ::Rails
-    def self.env
-      App.env
-    end
-  end
-
-  dbtasks = Gem.find_files "active_record/railties/databases.rake"
-  App.load dbtasks.first unless dbtasks.empty?
-end
-
 # Tasks from the app itself.
 
 Dir["lib/tasks/**/*.rake"].sort.each { |f| App.load f }
