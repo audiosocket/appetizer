@@ -18,10 +18,10 @@ includes a bunch of extracted stuff that requires other libraries
 1. `require "appetizer/setup"`, which will
 2. `load "config/env.local.rb"` if it exists, then
 3. `load "config/env.rb"` if **it** exists.
-4. App code is loaded, but not initialized.
-5. `App.init!` is called. Happens automatically if step 0 occurred.
-6. `load "config/{env,environments}/#{App.env}.rb"` if it exists, then
+4. `load "config/env/#{App.env}.rb" if **it** exists, then
+5. App code is loaded, but not initialized.
+6. `App.init!` is called. Happens automatically if step 0 occurred.
 7. Fire the `initializing` event.
-7. `load "config/{init,initializers}/**/*.rb"`, then
 8. `load "config/init.rb"` if it exists.
-9. Fire the `initialized` event.
+9. `load "config/{init/**/*.rb"`, then
+10. Fire the `initialized` event.

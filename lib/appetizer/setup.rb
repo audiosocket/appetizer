@@ -23,13 +23,10 @@ module App
   def self.init!
     return true if defined?(@initialized) && @initialized
 
-    envfile = "config/{env,environments}/#{App.env}.rb"
-    load envfile if File.exists? envfile
-
     fire :initializing
 
-    Dir["config/{init,initializers}/**/*.rb"].sort.each { |f| load f }
     load "config/init.rb" if File.exists? "config/init.rb"
+    Dir["config/init/**/*.rb"].sort.each { |f| load f }
 
     # If the app has an app/models directory, autorequire 'em.
 
@@ -88,8 +85,15 @@ end
 
 FileUtils.mkdir_p "tmp"
 
+# Load the global env files.
+
 App.load "config/env.local.rb" if File.exists? "config/env.local.rb"
 App.load "config/env.rb"       if File.exists? "config/env.rb"
+
+# Load the env-specific file.
+
+envfile = "config/env/#{App.env}.rb"
+load envfile if File.exists? envfile
 
 if defined? IRB
   IRB.conf[:PROMPT_MODE] = :SIMPLE
