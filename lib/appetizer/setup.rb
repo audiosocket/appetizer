@@ -75,7 +75,7 @@ end
 
 App.log.level = ENV["APPETIZER_LOG_LEVEL"] ?
   Logger.const_get(ENV["APPETIZER_LOG_LEVEL"].upcase) :
-  App.production? ? Logger::WARN : Logger::DEBUG
+  App.production? ? Logger::WARN : Logger::INFO
 
 def (App.log).write message
   self << message
