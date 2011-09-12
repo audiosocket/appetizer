@@ -37,26 +37,6 @@ App.on :initializing do
 end
 
 if defined? Appetizer::Test  
-  class Appetizer::Test
-    module Fixtures
-      def self.included klass
-        fixtures = Dir["test/fixtures/*.yml"].map { |f| File.basename f, ".yml" }
-
-        unless fixtures.empty?
-          require "active_record/fixtures"
-          ActiveRecord::Fixtures.create_fixtures "test/fixtures", fixtures, {}
-
-          fixtures.each do |fixture|
-            model = fixture.classify.constantize
-
-            define_method fixture do |name|
-              model.find ActiveRecord::Fixtures.identify name
-            end
-          end
-        end
-      end
-    end
-
     module Transactional
       def run runner
         result = nil
