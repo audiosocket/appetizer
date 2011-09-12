@@ -36,7 +36,8 @@ App.on :initializing do
   ActiveRecord::Base.establish_connection App.env
 end
 
-if defined? Appetizer::Test  
+if defined? Appetizer::Test
+  class Appetizer::Test
     module Transactional
       def run runner
         result = nil
