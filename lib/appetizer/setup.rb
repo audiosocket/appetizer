@@ -1,4 +1,4 @@
-# Add the app's lib to the load path immediately.
+
 
 $:.unshift File.expand_path "lib"
 
@@ -41,9 +41,9 @@ module App
   end
 
   def self.load file
-    now = Time.now.to_f if ENV["APPETIZER_TRACE"]
+    now = Time.now.to_f if ENV["TRACE"]
     Kernel.load file
-    p :load => { file => (Time.now.to_f - now) } if ENV["APPETIZER_TRACE"]
+    p :load => { file => (Time.now.to_f - now) } if ENV["TRACE"]
   end
 
   def self.log
@@ -55,9 +55,9 @@ module App
   end
 
   def self.require file
-    now = Time.now.to_f if ENV["APPETIZER_TRACE"]
+    now = Time.now.to_f if ENV["TRACE"]
     Kernel.require file
-    p :require => { file => (Time.now.to_f - now) } if ENV["APPETIZER_TRACE"]
+    p :require => { file => (Time.now.to_f - now) } if ENV["TRACE"]
   end
 
   def self.test?
@@ -66,15 +66,15 @@ module App
 end
 
 # Set default log formatter and level. WARN for production, INFO
-# otherwise. Override severity with the `APPETIZER_LOG_LEVEL` env
+# otherwise. Override severity with the `LOG_LEVEL` env
 # var. Formatter just prefixes with severity.
 
 App.log.formatter = lambda do |severity, time, program, message|
   "[#{severity}] #{message}\n"
 end
 
-App.log.level = ENV["APPETIZER_LOG_LEVEL"] ?
-  Logger.const_get(ENV["APPETIZER_LOG_LEVEL"].upcase) :
+App.log.level = ENV["LOG_LEVEL"] ?
+  Logger.const_get(ENV["LOG_LEVEL"].upcase) :
   App.production? ? Logger::WARN : Logger::INFO
 
 def (App.log).write message
