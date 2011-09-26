@@ -33,6 +33,10 @@ module Appetizer
         select { |t| t}.
         compact.flatten
     end
+
+    def self.test name, &block
+      define_method "test #{name}", &block
+    end
   end
 end
 
