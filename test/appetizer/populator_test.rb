@@ -9,7 +9,7 @@ class Appetizer::PopulatorTest < Appetizer::Test
     assert_equal :source, p.source
   end
 
-  def test_populate
+  def test_nested
     t2 = mock { expects(:bar=).with "baz" }
 
     t = mock do
@@ -17,7 +17,7 @@ class Appetizer::PopulatorTest < Appetizer::Test
     end
 
     Appetizer::Populator.new t, foo: { bar: "baz" } do |p|
-      p.populate :foo do |p|
+      p.nested :foo do |p|
         p.set :bar
       end
     end

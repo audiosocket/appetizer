@@ -16,11 +16,11 @@ module Appetizer
       yield self if block_given?
     end
 
-    def populate key, target = nil, &block
+    def nested key, target = nil, &block
       source   = self.source[key] || self.source[key.intern]
       target ||= self.target.send key
 
-      Overlord::Populator.new target, source, &block if source
+      Populator.new target, source, &block if source
     end
 
     def set key, &block
