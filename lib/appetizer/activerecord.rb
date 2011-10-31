@@ -1,4 +1,4 @@
-def App.arconfig!
+App.on :initializing do
   require "active_record"
   require "uri"
 
@@ -29,10 +29,7 @@ def App.arconfig!
 
   ActiveRecord::Base.configurations = { App.env.to_s => cfg }
   ActiveRecord::Base.logger = App.log
-end
 
-App.on :initializing do
-  App.arconfig!
   ActiveRecord::Base.establish_connection App.env
 end
 
