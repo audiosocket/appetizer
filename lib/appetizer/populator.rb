@@ -30,8 +30,6 @@ module Appetizer
       block ? block[value] : target.send("#{key}=", value)
     end
 
-    # Helpers for using Populator in a Sinatra app.
-
     module Helpers
 
       # Call `ctor.new` to create a new model object, then populate,

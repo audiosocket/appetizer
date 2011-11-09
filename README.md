@@ -1,8 +1,6 @@
 # Appetizer
 
-A lightweight init process for Rack apps. No external deps, but
-includes a bunch of extracted stuff that requires other libraries
-(sinatra, rack-ssl, haml, sass, etc).
+A lightweight init process for Rack apps.
 
 ## Assumptions
 
