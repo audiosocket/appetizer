@@ -3,7 +3,7 @@
 Gem::Specification.new do |gem|
   gem.authors       = ["Audiosocket"]
   gem.email         = ["it@audiosocket.com"]
-  gem.description   = "A thin shim for app initialization and configuration."
+  gem.description   = "A lightweight init process for Rack apps."
   gem.summary       = "Provides Railsish environments and initializers."
   gem.homepage      = "https://github.com/audiosocket/appetizer"
 
@@ -13,4 +13,6 @@ Gem::Specification.new do |gem|
   gem.name          = "appetizer"
   gem.require_paths = ["lib"]
   gem.version       = "0.0.0"
+
+  gem.required_ruby_version = ">= 1.9.2"
 end
