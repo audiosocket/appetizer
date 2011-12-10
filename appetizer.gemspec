@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Audiosocket"]
-  gem.email         = ["it@audiosocket.com"]
+  gem.email         = ["tech@audiosocket.com"]
   gem.description   = "A lightweight init process for Rack apps."
   gem.summary       = "Provides Railsish environments and initializers."
   gem.homepage      = "https://github.com/audiosocket/appetizer"
