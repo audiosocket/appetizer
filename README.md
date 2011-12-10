@@ -4,7 +4,7 @@ A lightweight init process for Rack apps.
 
 ## Assumptions
 
-* Running Ruby 1.9.2.
+* Running Ruby 1.9.2 or better.
 * Using Bundler.
 * Logging in all envs except `test` is to `STDOUT`. Logging in `test`
   is to `tmp/test.log`.
