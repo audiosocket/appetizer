@@ -23,10 +23,14 @@ module Appetizer
       Populator.new target, source, &block if source
     end
 
-    def set key, value = nil, &block
+    def set key, value = nil
       value ||= source[key] || source[key.intern]
 
       return if value.nil? || (value.respond_to?(:empty?) && value.empty?)
+      set! key, value
+    end
+
+    def set! key, value, &block
       block ? block[value] : target.send("#{key}=", value)
     end
 
