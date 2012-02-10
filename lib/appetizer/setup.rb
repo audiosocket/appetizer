@@ -7,6 +7,10 @@ require "logger"
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
+# Make sure tmp exists, a bunch of things may use it.
+
+FileUtils.mkdir_p "tmp"
+
 module App
   extend Appetizer::Events
 
@@ -21,9 +25,10 @@ module App
   def self.init!
     return true if defined?(@initialized) && @initialized
 
+    load "config/init.rb" if File.exists? "config/init.rb"
+
     fire :initializing
 
-    load "config/init.rb" if File.exists? "config/init.rb"
     Dir["config/init/**/*.rb"].sort.each { |f| load f }
 
     # If the app has an app/models directory, autorequire 'em.
@@ -78,10 +83,6 @@ App.log.level = ENV["LOG_LEVEL"] ?
 def (App.log).write message
   self << message
 end
-
-# Make sure tmp exists, a bunch of things may use it.
-
-FileUtils.mkdir_p "tmp"
 
 # Load the global env files.
 
