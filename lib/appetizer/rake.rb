@@ -10,7 +10,7 @@ Dir["#{here}/tasks/*.rake"].sort.each { |f| App.load f }
 
 # Load test tasks if the app appears to use tests.
 
-if File.directory? "test"
+if File.directory?("test") and !ENV["APPETIZER_NO_TESTS"]
   Dir["#{here}/tasks/test/*.rake"].sort.each { |f| App.load f }
 end
 
