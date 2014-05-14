@@ -22,7 +22,8 @@ A lightweight init process for Rack apps.
 7. Fire the `initializing` event.
 8. `load "config/init.rb"` if it exists.
 9. `load "config/{init/**/*.rb"`, then
-10. Fire the `initialized` event.
+10. `load "app/models/**/*.rb"` if it exists.
+11. Fire the `initialized` event.
 
 ## License (MIT)
 
