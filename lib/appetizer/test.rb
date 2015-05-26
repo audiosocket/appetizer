@@ -3,7 +3,7 @@ ENV["RACK_ENV"] = ENV["RAILS_ENV"] = "test"
 require "minitest/autorun"
 
 module Appetizer
-  class Test < MiniTest::Unit::TestCase
+  class Test < MiniTest::Test
     def setup
       self.class.setups.each { |s| instance_eval(&s) }
     end
